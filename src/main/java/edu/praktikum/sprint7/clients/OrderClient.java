@@ -16,4 +16,11 @@ public class OrderClient {
                 .when()
                 .post(API_V1_ORDERS);
     }
+
+    public Response get() {
+        return given()
+                .header("Content-type", "application/json")
+                .get(API_V1_ORDERS);
+    }
+
 }

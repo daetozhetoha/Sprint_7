@@ -39,7 +39,8 @@ public class CourierCreationTests {
     }
 
     @Test
-    public void CreateSimilarCourierReturns409() {
+    // Тест на текст ошибки падает, реализован другой ответ
+    public void CreateSimilarCourierReturnsError409() {
         courierClient.create(courier);
         Response duplicateResponse = courierClient.create(courier);
         duplicateResponse
@@ -47,13 +48,13 @@ public class CourierCreationTests {
                 .assertThat()
                 .statusCode(409)
                 .and()
-                // Тест на текст ошибки падает, т.к. в документации неактуальное значение - баг документации
                 .body("message", equalTo("Этот логин уже используется"));
 
     }
 
     @Test
-    public void CreateCourierWithoutFirstNameReturns201() {
+    //Тест на статус ошибки падает, по документации поле обязательное, фактически - нет
+    public void CreateCourierWithoutFirstNameReturnsError400() {
         Courier courierWithoutFirstName = new Courier()
                 .setLogin(randomString())
                 .setPassword(randomString());
@@ -61,11 +62,13 @@ public class CourierCreationTests {
         response
                 .then()
                 .assertThat()
-                .statusCode(201);
+                .statusCode(400)
+                .and()
+                .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
     @Test
-    public void CreateCourierWithoutLoginReturns400() {
+    public void CreateCourierWithoutLoginReturnsError400() {
         Courier courierWithoutLogin = new Courier()
                 .setFirstName(randomString())
                 .setPassword(randomString());
@@ -79,7 +82,7 @@ public class CourierCreationTests {
     }
 
     @Test
-    public void CreateCourierWithoutPasswordReturns400() {
+    public void CreateCourierWithoutPasswordReturnsError400() {
         Courier courierWithoutPassword = new Courier()
                 .setFirstName(randomString())
                 .setLogin(randomString());

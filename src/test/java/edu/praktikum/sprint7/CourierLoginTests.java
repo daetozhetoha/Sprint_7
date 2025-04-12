@@ -40,6 +40,50 @@ public class CourierLoginTests {
                 .body("id", notNullValue());
     }
 
+    @Test
+    public void LoginCourierWithWrongPasswordReturnsError404() {
+        Response wrongPassResponse = courierClient.login(CourierCreds.credsWithWrongPassword(courier));
+        wrongPassResponse
+                .then()
+                .assertThat()
+                .statusCode(404)
+                .and()
+                .body("message", equalTo("Учетная запись не найдена"));
+    }
+
+    @Test
+    public void LoginCourierWithWrongLoginReturnsError404() {
+        Response wrongLoginResponse = courierClient.login(CourierCreds.credsWithWrongLogin(courier));
+        wrongLoginResponse
+                .then()
+                .assertThat()
+                .statusCode(404)
+                .and()
+                .body("message", equalTo("Учетная запись не найдена"));
+    }
+
+    @Test
+    public void LoginCourierWithNullPasswordReturnsError400() {
+        Response nullPassResponse = courierClient.login(CourierCreds.credsWithNullPassword(courier));
+        nullPassResponse
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .and()
+                .body("message", equalTo("Недостаточно данных для входа"));
+    }
+
+    @Test
+    public void LoginWithNullLoginReturnsError400() {
+        Response nullLoginResponse = courierClient.login(CourierCreds.credsWithNullLogin(courier));
+        nullLoginResponse
+                .then()
+                .assertThat()
+                .statusCode(400)
+                .and()
+                .body("message", equalTo("Недостаточно данных для входа"));
+    }
+
     @After
     public void tearTest() {
         id = loginResponse.as(CourierLoginResponse.class).getId();
