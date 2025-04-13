@@ -21,16 +21,15 @@ public class GetOrdersTests {
     private final String BASE_URL = "https://qa-scooter.praktikum-services.ru/";
     private OrderClient orderclient;
     private Order order;
+    private String color;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = BASE_URL;
         orderclient = new OrderClient();
-        order = scooterOrderOnlyRequiredFields();
+        order = scooterOrder(color);
         orderclient.create(order);
-        order = blackScooterOrder();
         orderclient.create(order);
-        order = greyScooterOrder();
         orderclient.create(order);
     }
 

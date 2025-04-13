@@ -9,17 +9,34 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 
-import static edu.praktikum.sprint7.generators.OrderGenerator.*;
+import java.util.Arrays;
+import java.util.Collection;
 import static edu.praktikum.sprint7.utils.Utils.*;
-import static edu.praktikum.sprint7.utils.Utils.randomString;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
+@RunWith(Parameterized.class)
 public class OrderCreationTests {
     private final String BASE_URL = "https://qa-scooter.praktikum-services.ru/";
     private OrderClient orderclient;
-    private Order order;
+    private final String[] colors;
+
+    public OrderCreationTests(String[] colors) {
+        this.colors = colors;
+    }
+
+    @Parameterized.Parameters(name = "{index}: colors={0}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+                {new String[]{"BLACK"}},
+                {new String[]{"GREY"}},
+                {new String[]{"BLACK", "GREY"}},
+                {null}
+        });
+    }
 
     @Before
     public void setUp() {
@@ -28,44 +45,30 @@ public class OrderCreationTests {
     }
 
     @Test
-    @DisplayName("Check black scooter order")
-    @Description("Checking status code and body response for ordering black scooter")
-    public void BlackScooterOrdersReturns201() {
-        Response response = sendPostRequestV1OrdersForBlackScooter();
+    @DisplayName("Check scooter order with parameterized colors")
+    @Description("Checking status code and body response for ordering scooter with different colors")
+    public void testScooterOrder() {
+        Response response = sendPostRequestV1Orders(colors);
         compareStatus201WithResponse(response);
         checkParameterTrackFor201NotNull(response);
     }
 
-    @Test
-    @DisplayName("Check grey scooter order")
-    @Description("Checking status code and body response for ordering grey scooter")
-    public void GreyScooterOrdersReturns201() {
-        Response response = sendPostRequestV1OrdersForGreyScooter();
-        compareStatus201WithResponse(response);
-        checkParameterTrackFor201NotNull(response);
-    }
+    @Step("Send POST request to /api/v1/orders with color: {0}")
+    public Response sendPostRequestV1Orders(String[] colors) {
+        Order order = new Order()
+                .setCustomerFirstName(randomString())
+                .setCustomerLastName(randomString())
+                .setCustomerAddress(randomString())
+                .setCustomerMetroStation(randomMetroStation())
+                .setCustomerPhone(getRandomPhone())
+                .setRentTime(randomRentTime())
+                .setDeliveryDate(getFutureDate(5))
+                .setComment(randomString());
 
-    @Test
-    @DisplayName("Check black and grey scooter order")
-    @Description("Checking status code and body response for ordering black and grey scooter")
-    public void BothColorsScootersOrderReturns201() {
-        Response response = sendPostRequestV1OrdersForBothScooterColors();
-        compareStatus201WithResponse(response);
-        checkParameterTrackFor201NotNull(response);
-    }
+        if (colors != null) {
+            order.setColor(colors);
+        }
 
-    @Test
-    @DisplayName("Check scooter order without color choosing")
-    @Description("Checking status code and body response for ordering scooter without color choosing")
-    public void OrderScooterWithoutColorReturns201() {
-        Response response = sendPostRequestV1OrdersForScooterWithoutColor();
-        compareStatus201WithResponse(response);
-        checkParameterTrackFor201NotNull(response);
-    }
-
-    @Step("Send POST request to /api/v1/orders for black scooter")
-    public Response sendPostRequestV1OrdersForBlackScooter() {
-        order = blackScooterOrder();
         Response response = orderclient.create(order);
         return response;
     }
@@ -79,36 +82,4 @@ public class OrderCreationTests {
     public void checkParameterTrackFor201NotNull(Response response) {
         response.then().assertThat().body("track", notNullValue());
     }
-
-    @Step("Send POST request to /api/v1/orders for grey scooter")
-    public Response sendPostRequestV1OrdersForGreyScooter() {
-        order = greyScooterOrder();
-        Response response = orderclient.create(order);
-        return response;
-    }
-
-    @Step("Send POST request to /api/v1/orders for grey scooter")
-    public Response sendPostRequestV1OrdersForBothScooterColors() {
-        Order bothColorOrder = new Order()
-                .setCustomerFirstName(randomString())
-                .setCustomerLastName(randomString())
-                .setCustomerAddress(randomString())
-                .setCustomerMetroStation(randomMetroStation())
-                .setCustomerPhone(getRandomPhone())
-                .setRentTime(randomRentTime())
-                .setDeliveryDate(getFutureDate(5))
-                .setComment(randomString())
-                .setColor(new String[]{"BLACK", "GREY"});
-
-        Response response = orderclient.create(bothColorOrder);
-        return response;
-    }
-
-    @Step("Send POST request to /api/v1/orders for black scooter")
-    public Response sendPostRequestV1OrdersForScooterWithoutColor() {
-        order = scooterOrderOnlyRequiredFields();
-        Response response = orderclient.create(order);
-        return response;
-    }
-
 }

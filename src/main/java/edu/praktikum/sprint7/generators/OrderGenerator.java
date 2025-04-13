@@ -6,19 +6,7 @@ import static edu.praktikum.sprint7.utils.Utils.*;
 
 public class OrderGenerator {
 
-    public static Order scooterOrderOnlyRequiredFields() {
-        return new Order()
-                .setCustomerFirstName(randomString())
-                .setCustomerLastName(randomString())
-                .setCustomerAddress(randomString())
-                .setCustomerMetroStation(randomMetroStation())
-                .setCustomerPhone(getRandomPhone())
-                .setRentTime(randomRentTime())
-                .setDeliveryDate(getFutureDate(5))
-                .setComment(randomString());
-    }
-
-    public static Order blackScooterOrder() {
+    public static Order scooterOrder(String color) {
         return new Order()
                 .setCustomerFirstName(randomString())
                 .setCustomerLastName(randomString())
@@ -28,20 +16,6 @@ public class OrderGenerator {
                 .setRentTime(randomRentTime())
                 .setDeliveryDate(getFutureDate(5))
                 .setComment(randomString())
-                .setColor(new String[]{"BLACK"});
+                .setColor(new String[]{color});
     }
-
-    public static Order greyScooterOrder() {
-        return new Order()
-                .setCustomerFirstName(randomString())
-                .setCustomerLastName(randomString())
-                .setCustomerAddress(randomString())
-                .setCustomerMetroStation(randomMetroStation())
-                .setCustomerPhone(getRandomPhone())
-                .setRentTime(randomRentTime())
-                .setDeliveryDate(getFutureDate(5))
-                .setComment(randomString())
-                .setColor(new String[]{"GREY"});
-    }
-
 }
