@@ -33,7 +33,7 @@ public class CourierCreationTests {
     @Test
     @DisplayName("Check courier creation with valid credentials")
     @Description("Checking status code and body response for valid credentials")
-    public void CreateValidCourierReturnsOKTrue201() {
+    public void сreateValidCourierReturnsOKTrue201() {
         Response response = sendPostRequestV1Courier();
         compareStatus201WithResponse(response);
         compareParameterOkWithResponse(response);
@@ -43,7 +43,7 @@ public class CourierCreationTests {
     @Test
     @DisplayName("Check courier creation with existing login")
     @Description("Checking status code and body response for creation a courier with existing login in database")
-    public void CreateSimilarCourierReturnsError409() {
+    public void сreateSimilarCourierReturnsError409() {
         createCourier();
         Response duplicateResponse = sendPostRequestV1Courier();
         compareStatus409WithResponse(duplicateResponse);
@@ -54,7 +54,7 @@ public class CourierCreationTests {
     @Test
     @DisplayName("Check courier creation without firstname")
     @Description("Checking status code and body response for creation a courier without firstname")
-    public void CreateCourierWithoutFirstnameReturnsError400() {
+    public void сreateCourierWithoutFirstnameReturnsError400() {
         Response response = sendPostRequestV1CouriersWithoutFirstname();
         compareStatus400WithResponse(response);
         compareParameterMessageFor400WithResponse(response);
@@ -63,7 +63,7 @@ public class CourierCreationTests {
     @Test
     @DisplayName("Check courier creation without login")
     @Description("Checking status code and body response for creation a courier without login")
-    public void CreateCourierWithoutLoginReturnsError400() {
+    public void сreateCourierWithoutLoginReturnsError400() {
         Response response = sendPostRequestV1CourierWithoutLogin();
         compareStatus400WithResponse(response);
         compareParameterMessageFor400WithResponse(response);
@@ -72,7 +72,7 @@ public class CourierCreationTests {
     @Test
     @DisplayName("Check courier creation without password")
     @Description("Checking status code and body response for creation a courier without password")
-    public void CreateCourierWithoutPasswordReturnsError400() {
+    public void сreateCourierWithoutPasswordReturnsError400() {
         Response response = sendPostRequestV1CourierWithoutPassword();
         compareStatus400WithResponse(response);
         compareParameterMessageFor400WithResponse(response);

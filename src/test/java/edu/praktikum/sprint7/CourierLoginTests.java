@@ -35,7 +35,7 @@ public class CourierLoginTests {
     @Test
     @DisplayName("Check courier login with valid credentials")
     @Description("Checking status code and body response for login with valid login and password")
-    public void ExistingCourierLoginReturnsOk200() {
+    public void existingCourierLoginReturnsOk200() {
         Response loginResponse = sendPostRequestV1CourierLogin();
         compareStatus200WithResponse(loginResponse);
         compareParameterIdFor200WithResponse(loginResponse);
@@ -44,7 +44,7 @@ public class CourierLoginTests {
     @Test
     @DisplayName("Check courier login with wrong password")
     @Description("Checking status code and body response for login with wrong password")
-    public void LoginCourierWithWrongPasswordReturnsError404() {
+    public void loginCourierWithWrongPasswordReturnsError404() {
         Response wrongPassResponse = sendPostRequestV1CourierLoginWithWrongPassword();
         compareStatus404WithResponse(wrongPassResponse);
         compareParameterMessageFor404WithResponse(wrongPassResponse);
@@ -53,7 +53,7 @@ public class CourierLoginTests {
     @Test
     @DisplayName("Check courier login with wrong login")
     @Description("Checking status code and body response for login with wrong login")
-    public void LoginCourierWithWrongLoginReturnsError404() {
+    public void loginCourierWithWrongLoginReturnsError404() {
         Response wrongLoginResponse = sendPostRequestV1CourierLoginWithWrongLogin();
         compareStatus404WithResponse(wrongLoginResponse);
         compareParameterMessageFor404WithResponse(wrongLoginResponse);
@@ -62,7 +62,7 @@ public class CourierLoginTests {
     @Test
     @DisplayName("Check courier login without password")
     @Description("Checking status code and body response for login without password")
-    public void LoginCourierWithNullPasswordReturnsError400() {
+    public void loginCourierWithNullPasswordReturnsError400() {
         Response nullPassResponse = sendPostRequestV1CourierLoginWithNullPassword();
         compareStatus400WithResponse(nullPassResponse);
         compareParameterMessageFor400WithResponse(nullPassResponse);
@@ -71,7 +71,7 @@ public class CourierLoginTests {
     @Test
     @DisplayName("Check courier login without login")
     @Description("Checking status code and body response for login without login")
-    public void LoginWithNullLoginReturnsError400() {
+    public void loginWithNullLoginReturnsError400() {
         Response nullLoginResponse = sendPostRequestV1CourierLoginWithNullLogin();
         compareStatus400WithResponse(nullLoginResponse);
         compareParameterMessageFor400WithResponse(nullLoginResponse);

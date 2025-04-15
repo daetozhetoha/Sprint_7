@@ -36,7 +36,7 @@ public class GetOrdersTests {
     @Test
     @DisplayName("Check getting list of orders")
     @Description("Checking status code and body response structure")
-    public void GetOrdersReturnsListOfOrders() {
+    public void getOrdersReturnsListOfOrders() {
         Response response = sendPostRequestV1Orders();
         compareStatus200WithResponse(response);
         checkThatOrdersParameterIsArray(response);
